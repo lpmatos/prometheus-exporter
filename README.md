@@ -5,7 +5,7 @@
 <h1 align="center">Prometheus Exporter Helm Chart</h1>
 
 <p align="center">
-  <strong>This Helm Chart deploy prometheus exports and create endpoints to each exporter</strong>
+  <strong>This Helm Chart deploy prometheus exports and create an endpoint to each them</strong>
 </p>
 
 
