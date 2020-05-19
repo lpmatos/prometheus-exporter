@@ -6,16 +6,34 @@
 {{- $releaseName := .Release.Name -}}
 {{- $releaseService := .Release.Service -}}
 {{- $releaseNamespace := .Release.Namespace -}}
+
 {{- $replicas := .Values.global.replicaCount -}}
 
+{{- $prometheusImage := include "prometheus.image" . -}}
 {{- $imagePullSecrets := .Values.global.image.pullSecrets -}}
 {{- $imagePullPolicy := default "" .Values.global.image.pullPolicy -}}
 
+{{- $resources := toYaml .Values.resources -}}
+
+{{- $livenessProbeInitialDelaySeconds := .Values.livenessProbe.initialDelaySeconds -}}
+{{- $livenessProbePeriodSeconds := .Values.livenessProbe.periodSeconds -}}
+{{- $livenessProbeTimeoutSeconds := .Values.livenessProbe.timeoutSeconds -}}
+{{- $livenessProbeSuccessThreshold := .Values.livenessProbe.successThreshold -}}
+{{- $livenessProbeFailureThreshold := .Values.livenessProbe.failureThreshold -}}
+
+{{- $readinessProbeInitialDelaySeconds := .Values.readinessProbe.initialDelaySeconds -}}
+{{- $readinessProbePeriodSeconds := .Values.readinessProbe.periodSeconds -}}
+{{- $readinessProbeTimeoutSeconds := .Values.readinessProbe.timeoutSeconds -}}
+{{- $readinessProbeSuccessThreshold := .Values.readinessProbe.successThreshold -}}
+{{- $readinessProbeFailureThreshold := .Values.readinessProbe.failureThreshold -}}
+
+{{- $securityContext := .Values.securityContext -}}
+
 {{- $targetPort := default 9106 .Values.service.targetPort -}}
+
 {{- $secretName := include "aws.secret.name" . -}}
 
-{{- $globalPath := .Files.Glob "files/exporters/*.{yml,yaml}" }}
-
+{{- $exportersPath := .Files.Glob "files/exporters/*.{yml,yaml}" -}}
 {{- if .Values.providers.aws.exporters }}
 {{- range .Values.providers.aws.exporters }}
 {{- $name := .name }}
@@ -50,8 +68,10 @@ spec:
         - name: {{ $imagePullSecrets }}
       containers:
         - name: {{ $name }}
-          image: prom/cloudwatch-exporter
-          imagePullPolicy: {{ $imagePullPolicy }}   
+          image: {{ $prometheusImage }}
+          imagePullPolicy: {{ $imagePullPolicy }}
+          resources:
+{{ $resources | indent 12 }}
           env:
             - name: PORT
               value: {{ $targetPort | quote }}
@@ -64,37 +84,59 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ $secretName }}
-                  key: aws-secret-key       
+                  key: aws-secret-key
+          livenessProbe:
+            httpGet:
+              path: /api/aws/{{ $name }}/-/healthy
+              port: {{ $targetPort }}
+            initialDelaySeconds: {{ $livenessProbeInitialDelaySeconds }}
+            periodSeconds: {{ $livenessProbePeriodSeconds }}
+            timeoutSeconds: {{ $livenessProbeTimeoutSeconds }}
+            successThreshold: {{ $livenessProbeSuccessThreshold }}
+            failureThreshold: {{ $livenessProbeFailureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /api/aws/{{ $name }}/-/ready
+              port: {{ $targetPort }}
+            initialDelaySeconds: {{ $readinessProbeInitialDelaySeconds }}
+            periodSeconds: {{ $readinessProbePeriodSeconds }}
+            timeoutSeconds: {{ $readinessProbeTimeoutSeconds }}
+            successThreshold: {{ $readinessProbeSuccessThreshold }}
+            failureThreshold: {{ $readinessProbeFailureThreshold }}
           ports:
             - containerPort: {{ $targetPort }}
-        {{- if .config }}
+          {{- if .config }}
           volumeMounts:
             - name: {{ $name }}-configmap
               mountPath: /config/config.yml
               readOnly: true
               subPath: config.yml
-        volumes:
+      volumes:
         - name: {{ $name }}-configmap
           configMap:
             name: {{ $name }}-configmap
-            defaultMode: 0600
-        {{- else if and $globalPath (not (.config)) }}
-        {{- range $path, $bytes := $globalPath }}
-        {{- $file := base $path | replace ".yml" "" | replace ".yaml" "" }}
-        {{- if eq $file $name }}
+            defaultMode: 420
+          {{- else if and $exportersPath (not (.config)) }}
+          {{- range $path, $bytes := $exportersPath }}
+          {{- $file := base $path | replace ".yml" "" | replace ".yaml" "" -}}
+          {{- if eq $file $name }}
           volumeMounts:
             - name: {{ $file }}-external-configmap
               mountPath: /config/config.yml
               readOnly: true
               subPath: config.yml
-        volumes:
+      volumes:
         - name: {{ $file }}-external-configmap
           configMap:
             name: {{ $file }}-external-configmap
-            defaultMode: 0600
-        {{- end }}
-        {{- end }}
-        {{- end }}
+            defaultMode: 420   
+          {{- end }}
+          {{- end }}
+          {{- end }}
+      {{- with $securityContext }}
+      securityContext:
+{{ toYaml . | indent 8 }}
+      {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

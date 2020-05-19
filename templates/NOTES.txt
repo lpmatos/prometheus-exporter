@@ -1,3 +1,14 @@
 Helm debug dry-run was successful.
 
-Thank you for install Project Prometheus Exporter Chart!
+Thank you for install Prometheus Exporter Chart!
+
+Deployments Names:
+
+{{- if .Values.providers.aws.exporters }}
+{{- range .Values.providers.aws.exporters }}
+{{- $name := .name }}
+{{- if .enabled }}
+{{ $name }}
+{{- end }}
+{{- end }}
+{{- end }}

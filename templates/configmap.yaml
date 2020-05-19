@@ -1,4 +1,4 @@
-{{- if and .Values.providers.aws.exporters }}
+{{- if .Values.providers.aws.exporters }}
 {{- range .Values.providers.aws.exporters }}
 ---
 {{- if and .enabled .config }}

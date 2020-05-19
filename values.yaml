@@ -4,6 +4,7 @@
 # GLOBAL DEFINITION
 # ==============================================================================
 
+#
 # Legend:
 #   - group: GitLab Group Reference.
 #   - subGroup: GitLab Sub Group Reference.
@@ -19,15 +20,15 @@
 global:
   group: msp
   subGroup: mcms
-  client: mspcel430
+  client: cel430
   replicaCount: 1
   environment: stage
   domain: domain.io
   image:
-    tag: develop
+    repository: prom/cloudwatch-exporter
+    tag: cloudwatch_exporter-0.8.0
     pullPolicy: IfNotPresent
     pullSecrets: secret-key
-    registry: registry.io
 
 # ==============================================================================
 # SERVICE DEFINITION
@@ -50,13 +51,13 @@ service:
 # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
-resources: {}
-  # limits:
-  #   cpu: 200m
-  #    memory: 252Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  limits:
+    cpu: 200m
+    memory: 252Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 # ==============================================================================
 # LIVENESS AND READINESS PROBE DEFINITION
@@ -64,18 +65,17 @@ resources: {}
     
 # Configurable health checks against the /healthy and /ready endpoints
 livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 5
+  initialDelaySeconds: 120
+  periodSeconds: 10
   timeoutSeconds: 5
+  failureThreshold: 6
   successThreshold: 1
-  failureThreshold: 3
-
 readinessProbe:
   initialDelaySeconds: 30
-  periodSeconds: 5
+  periodSeconds: 10
   timeoutSeconds: 5
+  failureThreshold: 6
   successThreshold: 1
-  failureThreshold: 3
 
 # ==============================================================================
 # SECURITY CONTEXT DEFINITION
@@ -94,7 +94,7 @@ nginx:
     secret:
       name: basic-auth
       user: admin-cloud
-      password:
+      password: 
     realm: Auth Required - Monitoring
 
 # ==============================================================================
@@ -103,7 +103,7 @@ nginx:
 
 providers:
   aws:
-    accessKey:
+    accessKey: 
     secretKey:
     exporters:
       - name: lambda
@@ -170,7 +170,3 @@ providers:
         enabled: true
       - name: elb
         enabled: true
-  google:
-    exporters:
-  azure:
-    exporters:

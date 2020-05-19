@@ -104,6 +104,12 @@ global:
 ### Links
 
 * https://stackoverflow.com/questions/59824039/basic-authentication-via-nginx-ingress-controller
+* https://github.com/theupdateframework/notary/pull/1503/files/8685262c4b6c0763af6b7c4366a126b3a0378826
+* https://stackoverflow.com/questions/56671452/helm-chart-error-cant-evaluate-field-values-in-type-interface
+* https://github.com/helm/helm/issues/3403
+* https://stackoverflow.com/questions/44780166/nested-ranges-in-golang-template
+* https://stackoverflow.com/questions/55639436/create-multiple-persistent-volumes-in-one-yaml
+* https://github.com/helm/helm/issues/1669
 
 ### How to contribute
 

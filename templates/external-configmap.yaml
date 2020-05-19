@@ -1,9 +1,9 @@
 {{- if and (.Files.Glob "files/exporters/*.{yml,yaml}") .Values.providers.aws.exporters }}
-{{- $globalPath := .Files.Glob "files/exporters/*.{yml,yaml}" }}
+{{- $exportersPath := .Files.Glob "files/exporters/*.{yml,yaml}" }}
 {{- range .Values.providers.aws.exporters }}
 {{- $name := .name }}
 {{- if and .enabled (not (.config)) }}
-{{- range $path, $bytes := $globalPath }}
+{{- range $path, $bytes := $exportersPath }}
 {{- $file := base $path | replace ".yml" "" | replace ".yaml" "" }}
 {{- if eq $file $name }}
 ---
