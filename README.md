@@ -1,4 +1,51 @@
+<p align="center">
+  <img alt="helm-chart" src="https://caylent.com/wp-content/uploads/2018/12/Featured-images-helms-tools.png" width="250px" float="center"/>
+</p>
+
 <h1 align="center">Prometheus Exporter Helm Chart</h1>
+
+<p align="center">
+  <strong>This Helm Chart deploy prometheus exports and create endpoints to each exporter</strong>
+</p>
+
+
+<p align="center">
+  <a href="https://github.com/lpmatos/prometheus-exporter">
+    <img alt="Open Source" src="https://badges.frapsoft.com/os/v1/open-source.svg?v=102">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter/graphs/contributors">
+    <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/lpmatos/prometheus-exporter">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter">
+    <img alt="GitHub Language Count" src="https://img.shields.io/github/languages/count/lpmatos/prometheus-exporter">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter">
+    <img alt="GitHub Top Language" src="https://img.shields.io/github/languages/top/lpmatos/prometheus-exporter">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter/stargazers">
+    <img alt="GitHub Stars" src="https://img.shields.io/github/stars/lpmatos/prometheus-exporter?style=social">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter/commits/master">
+    <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/lpmatos/prometheus-exporter">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter">
+    <img alt="Repository Size" src="https://img.shields.io/github/repo-size/lpmatos/prometheus-exporter">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter/issues">
+    <img alt="Repository Issues" src="https://img.shields.io/github/issues/lpmatos/prometheus-exporter">
+  </a>
+
+  <a href="https://github.com/lpmatos/prometheus-exporter/blob/master/LICENSE">
+    <img alt="MIT License" src="https://img.shields.io/github/license/lpmatos/prometheus-exporter">
+  </a>
+</p>
 
 ### Menu
 
@@ -10,6 +57,12 @@
   <a href="#exemple-answers">Exemple</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#how-to-contribute">How to contribute</a>
 </p>
+
+### By me a coffe
+
+Pull requests are welcome. If you'd like to support the work and buy me a ☕, I greatly appreciate it!
+
+<a href="https://www.buymeacoffee.com/EatdMck" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 100px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
 ### Getting Started
 
@@ -96,6 +149,14 @@ global:
   replicaCount: 2
 ```
 
+### Helm
+
+![Alt text](docs/images/HELM.PNG?raw=true "Helm")
+
+### Prometheus
+
+![Alt text](docs/images/PROMETHEUS.PNG?raw=true "Prometheus")
+
 ### Built with
 
 - [Helm](https://helm.sh/)
@@ -113,13 +174,14 @@ global:
 
 ### How to contribute
 
-1. Make a **Fork**.
-2. Follow the project organization.
-3. Add the file to the appropriate level folder - If the folder does not exist, create according to the standard.
-4. Make the **Commit**.
-5. Open a **Pull Request**.
-6. Wait for your pull request to be accepted.. 🚀
-
+>
+> 1. Make a **Fork**.
+> 2. Follow the project organization.
+> 3. Add the file to the appropriate level folder - If the folder does not exist, create according to the standard.
+> 4. Make the **Commit**.
+> 5. Open a **Pull Request**.
+> 6. Wait for your pull request to be accepted.. 🚀
+>
 Remember: There is no bad code, there are different views/versions of solving the same problem. 😊
 
 ### Add to git and push
@@ -128,7 +190,7 @@ You must send the project to your GitHub after the modifications
 
 ```bash
 git add -f .
-git commit -m "Added - initial files in the project"
+git commit -m "Added - Fixing somethings"
 git push origin master
 ```
 
@@ -136,14 +198,29 @@ git push origin master
 
 - [CHANGELOG](CHANGELOG.md)
 
+### License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
+
+### Author
+
+👤 **Lucca Pessoa**
+
+Hey!! If you like this project or if you find some bugs feel free to contact me in my channels:
+
+> * Email: luccapsm@gmail.com
+> * Website: https://github.com/lpmatos
+> * Github: [@lpmatos](https://github.com/lpmatos)
+> * LinkedIn: [@luccapessoa](https://linkedin.com/in/luccapessoa)
+
 ### Show your support
 
 Give a ⭐️ if this project helped you!
 
-### Project Migration Digital Ocean to AWS
+### Project Status
 
 * ✔️ Finish
 
 ---
 
-Feito com ❤️ by **Lucca Pessoa**
+<p align="center">Feito com ❤️ by <strong>Lucca Pessoa :wave:</p>
