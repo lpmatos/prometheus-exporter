@@ -1,0 +1,25 @@
+{{- $releaseNamespace := .Release.Namespace -}}
+{{- $type := default "ClusterIP" .Values.service.type -}}
+{{- $port := default 80 .Values.service.port -}}
+{{- $targetPort := default 9106 .Values.service.targetPort -}}
+{{- if .Values.providers.aws.exporters }}
+{{- range .Values.providers.aws.exporters }}
+---
+{{- if .enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+spec:
+  type: {{ $type }}
+  ports:
+    - name: {{ .name }}
+      port: {{ $port }}
+      protocol: TCP
+      targetPort: {{ $targetPort }}
+  selector:
+    app: {{ .name }}
+{{- end }}
+{{- end }}
+{{- end }}
+---

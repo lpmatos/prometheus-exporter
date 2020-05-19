@@ -1,0 +1,49 @@
+{{- $replicas := .Values.global.replicaCount -}}
+{{- $apiVersion := include "deployment.apiVersion" . -}}
+{{- $imagePullSecrets := .Values.global.image.PullSecrets -}}
+{{- $targetPort := default 9106 .Values.service.targetPort -}}
+{{- $secretName := include "aws.secret.name" . -}}
+{{- if .Values.providers.aws.exporters }}
+{{- range .Values.providers.aws.exporters }}
+{{- if .enabled }}
+---
+apiVersion: {{ $apiVersion }}
+kind: Deployment
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+spec:
+  replicas: {{ $replicas }}
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      imagePullSecrets: 
+        - name: {{ $imagePullSecrets }}
+      containers:
+        - name: {{ .name }}
+          env:
+            - name: PORT
+              value: {{ $targetPort | quote }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: aws-access-key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretName }}
+                  key: aws-secret-key
+          image: {{ include "aws.image" . }}
+          ports:
+            - containerPort: {{ $targetPort }}
+{{- end }}
+{{- end }}
+{{- end }}
+---
