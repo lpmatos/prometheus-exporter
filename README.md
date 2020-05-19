@@ -50,7 +50,6 @@
 ### Menu
 
 <p align="center">
-  <a href="#services">Services</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#kubernetes">Kubernetes</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#architecture">Architecture</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#validate-helm">Validate</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -115,10 +114,6 @@ Deletion of the StatefulSet doesn't cascade to deleting associated PVCs. To dele
 $ kubectl delete pvc -l release=my-release,component=data
 ```
 
-## Services
-
-* Exports
-
 ## Kubernetes
 
 * Deployment:
@@ -133,6 +128,10 @@ $ kubectl delete pvc -l release=my-release,component=data
 * Secret:
   * AWS Secret.
   * Docker Registry Secret.
+
+* ConfigMap:
+  * Values.
+  * External.
 
 ### Validate Helm
 
