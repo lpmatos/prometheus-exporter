@@ -1,0 +1,70 @@
+---
+region: us-east-1
+metrics:
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: CPUUtilization
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: CPUCreditBalance
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: DatabaseConnections
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [SampleCount]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: FreeableMemory
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: FreeStorageSpace
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: ReadIOPS
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: ReadLatency
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: ReadThroughput
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: WriteIOPS
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: WriteLatency
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+
+# RDS
+- aws_namespace: AWS/RDS
+  aws_metric_name: WriteThroughput
+  aws_dimensions: [DBInstanceIdentifier]
+  aws_statistics: [Average]
+  

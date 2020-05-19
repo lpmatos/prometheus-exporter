@@ -1,5 +1,5 @@
-{{/* Return nginx secret password */}}
-{{- define "nginx.secret.password" -}}
+{{/* Return nginx auth secret password */}}
+{{- define "nginx.auth.secret.password" -}}
 {{- $nginxAuthUser := .Values.nginx.auth.secret.user -}}
 {{- $nginxAuthPassword := .Values.nginx.auth.secret.password -}}
 {{- $randon := randAlphaNum 10 -}}

@@ -1,6 +1,4 @@
-<h1 align="center">Helm Chart Prometheus Exporter</h1>
-
-This is Prometheus Exporter Helm Chart.
+<h1 align="center">Prometheus Exporter Helm Chart</h1>
 
 ### Menu
 
@@ -141,3 +139,5 @@ Give a ⭐️ if this project helped you!
 * ✔️ Finish
 
 ---
+
+Feito com ❤️ by **Lucca Pessoa**

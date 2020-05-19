@@ -1,0 +1,21 @@
+---
+region: us-east-1
+metrics:
+
+# VPN
+- aws_namespace: AWS/VPN
+  aws_metric_name: TunnelState
+  aws_dimensions: [VpnId]
+  aws_statistics: [Average]
+
+# VPN
+# - aws_namespace: AWS/VPN
+#  aws_metric_name: TunnelDataIn
+#  aws_dimensions: [VpnId]
+#  aws_statistics: [Average]
+
+# VPN
+#- aws_namespace: AWS/VPN
+#  aws_metric_name: TunnelDataOut
+#  aws_dimensions: [VpnId]
+#  aws_statistics: [Average]

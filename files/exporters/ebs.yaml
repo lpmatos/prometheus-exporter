@@ -1,0 +1,16 @@
+---
+region: us-east-1
+metrics:
+
+# EBS
+- aws_namespace: AWS/EBS
+  aws_metric_name: VolumeIdleTime
+  aws_dimensions: [VolumeId]
+  aws_statistics: [Average]
+
+# EBS
+- aws_namespace: AWS/EBS
+  aws_metric_name: VolumeQueueLength
+  aws_dimensions: [VolumeId]
+  aws_statistics: [Average]
+  

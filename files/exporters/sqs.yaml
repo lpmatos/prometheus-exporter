@@ -1,0 +1,51 @@
+---
+region: us-east-1
+metrics:
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: ApproximateAgeOfOldestMessage
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: ApproximateNumberOfMessagesNotVisible
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: ApproximateNumberOfMessagesVisible
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: NumberOfEmptyReceives
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: NumberOfMessagesDeleted
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: NumberOfMessagesReceived
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: NumberOfMessagesSent
+  aws_dimensions: [QueueName]
+  aws_statistics: [Sum]
+
+# SQS
+- aws_namespace: AWS/SQS
+  aws_metric_name: SentMessageSize
+  aws_statistics: [Sum]
+  

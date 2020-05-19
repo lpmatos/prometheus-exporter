@@ -3,11 +3,6 @@
 {{- printf "%s-%s" "aws" "secret" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/* Return the proper backend image name. */}}
-{{- define "aws.image" -}}
-{{- printf "%s-%s:%s" "registry.stefanini.io/msp/mcms/api/aws" $.name "develop" -}}
-{{- end -}}
-
 {{/* Return aws access key */}}
 {{- define "aws.access.key" -}}
 {{- if .Values.providers.aws.accessKey -}}

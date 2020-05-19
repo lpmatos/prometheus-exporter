@@ -1,0 +1,46 @@
+---
+region: us-east-1
+metrics:
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: Invocations
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: Errors
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: DeadLetterErrors
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: DestinationDeliveryFailures
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: Throttles
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: ProvisionedConcurrencyInvocations
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+
+# LAMBDA
+- aws_namespace: AWS/LAMBDA
+  aws_metric_name: ProvisionedConcurrencySpilloverInvocations
+  aws_dimensions: [FunctionName]
+  aws_statistics: [Sum]
+  

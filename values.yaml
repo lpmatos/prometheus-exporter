@@ -4,29 +4,29 @@
 # GLOBAL DEFINITION
 # ==============================================================================
 
-#
 # Legend:
 #   - group: GitLab Group Reference.
-#   - subGroup: GitLab SubGroup Reference.
-#   - tag: GitLab Image Tag Reference.
-#   - environment: Cluster Environment.
-#   - registry: Your Registry.
-#   - domain: Your Domain.
+#   - subGroup: GitLab Sub Group Reference.
+#   - client: Client name.
 #   - replicaCount: Number of replicas of the deployment.
-#   - imagePullSecrets: Registration key for a pod - It would be a secret to our registration.
-#   - imagePullPolicy: Update image policies.
+#   - environment: Cluster Environment.
+#   - domain: Your Domain.
+#   - image.tag: GitLab Image Tag Reference.
+#   - image.pullPolicy: Update image policies.
+#   - image.pullSecrets: Registration key for a pod - It would be a secret to our registration.
+#   - image.registry: Your Registry.
 #
 global:
   group: msp
   subGroup: mcms
-  client: cel430
+  client: mspcel430
   replicaCount: 1
   environment: stage
   domain: domain.io
   image:
     tag: develop
-    PullPolicy: Always
-    PullSecrets: myregistrykey
+    pullPolicy: IfNotPresent
+    pullSecrets: secret-key
     registry: registry.io
 
 # ==============================================================================
@@ -34,26 +34,55 @@ global:
 # ==============================================================================
 
 service:
-  annotations: {}
   type: ClusterIP
   port: 80
   targetPort: 9106
+  annotations: {}
+  labels: {}
 
 # ==============================================================================
 # RESOURCES DEFINITION
 # ==============================================================================
 
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-  #   cpu: 100m
-  #    memory: 128Mi
+  #   cpu: 200m
+  #    memory: 252Mi
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+# ==============================================================================
+# LIVENESS AND READINESS PROBE DEFINITION
+# ==============================================================================
+    
+# Configurable health checks against the /healthy and /ready endpoints
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+readinessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+# ==============================================================================
+# SECURITY CONTEXT DEFINITION
+# ==============================================================================
+
+securityContext:
+  runAsUser: 65534  # run as nobody user instead of root
 
 # ==============================================================================
 # NGINX DEFINITION
@@ -65,7 +94,7 @@ nginx:
     secret:
       name: basic-auth
       user: admin-cloud
-      password: 
+      password:
     realm: Auth Required - Monitoring
 
 # ==============================================================================
@@ -74,29 +103,74 @@ nginx:
 
 providers:
   aws:
-    accessKey: ""
-    secretKey: ""
+    accessKey:
+    secretKey:
     exporters:
       - name: lambda
         enabled: true
+        config: |-
+          ---
+          region: us-east-1
+          metrics:
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: Invocations
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: Errors
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: DeadLetterErrors
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: DestinationDeliveryFailures
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: Throttles
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: ProvisionedConcurrencyInvocations
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
+
+          # LAMBDA
+          - aws_namespace: AWS/LAMBDA
+            aws_metric_name: ProvisionedConcurrencySpilloverInvocations
+            aws_dimensions: [FunctionName]
+            aws_statistics: [Sum]
       - name: billing
         enabled: true
       - name: ebs
         enabled: true
       - name: elasticache
-        enabled: false
+        enabled: true
       - name: vpn
         enabled: true
       - name: ses
         enabled: false
       - name: sqs
-        enabled: true
-      - name: rds
         enabled: false
+      - name: rds
+        enabled: true
       - name: elb
         enabled: true
   google:
     exporters:
   azure:
     exporters:
-    

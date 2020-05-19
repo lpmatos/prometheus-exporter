@@ -1,32 +1,57 @@
-{{- $replicas := .Values.global.replicaCount -}}
 {{- $apiVersion := include "deployment.apiVersion" . -}}
-{{- $imagePullSecrets := .Values.global.image.PullSecrets -}}
+
+{{- $chartName := include "project-mcms.chart" . -}}
+{{- $chartVersion := .Chart.AppVersion -}}
+
+{{- $releaseName := .Release.Name -}}
+{{- $releaseService := .Release.Service -}}
+{{- $releaseNamespace := .Release.Namespace -}}
+{{- $replicas := .Values.global.replicaCount -}}
+
+{{- $imagePullSecrets := .Values.global.image.pullSecrets -}}
+{{- $imagePullPolicy := default "" .Values.global.image.pullPolicy -}}
+
 {{- $targetPort := default 9106 .Values.service.targetPort -}}
 {{- $secretName := include "aws.secret.name" . -}}
+
+{{- $globalPath := .Files.Glob "files/exporters/*.{yml,yaml}" }}
+
 {{- if .Values.providers.aws.exporters }}
 {{- range .Values.providers.aws.exporters }}
+{{- $name := .name }}
 {{- if .enabled }}
 ---
 apiVersion: {{ $apiVersion }}
 kind: Deployment
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
+  namespace: {{ $releaseNamespace }}
   labels:
-    app: {{ .name }}
+    helm.sh/chart: {{ $chartName }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $releaseName }}
+    {{- if $chartVersion }}
+    app.kubernetes.io/version: {{ $chartVersion | quote }}
+    {{- end }}
+    app.kubernetes.io/managed-by: {{ $releaseService }}
 spec:
   replicas: {{ $replicas }}
   selector:
     matchLabels:
-      app: {{ .name }}
+      app.kubernetes.io/name: {{ $name }}
+      app.kubernetes.io/instance: {{ $releaseName }}
   template:
     metadata:
       labels:
-        app: {{ .name }}
+        app.kubernetes.io/name: {{ $name }}
+        app.kubernetes.io/instance: {{ $releaseName }}
     spec:
       imagePullSecrets: 
         - name: {{ $imagePullSecrets }}
       containers:
-        - name: {{ .name }}
+        - name: {{ $name }}
+          image: prom/cloudwatch-exporter
+          imagePullPolicy: {{ $imagePullPolicy }}   
           env:
             - name: PORT
               value: {{ $targetPort | quote }}
@@ -39,10 +64,37 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ $secretName }}
-                  key: aws-secret-key
-          image: {{ include "aws.image" . }}
+                  key: aws-secret-key       
           ports:
             - containerPort: {{ $targetPort }}
+        {{- if .config }}
+          volumeMounts:
+            - name: {{ $name }}-configmap
+              mountPath: /config/config.yml
+              readOnly: true
+              subPath: config.yml
+        volumes:
+        - name: {{ $name }}-configmap
+          configMap:
+            name: {{ $name }}-configmap
+            defaultMode: 0600
+        {{- else if and $globalPath (not (.config)) }}
+        {{- range $path, $bytes := $globalPath }}
+        {{- $file := base $path | replace ".yml" "" | replace ".yaml" "" }}
+        {{- if eq $file $name }}
+          volumeMounts:
+            - name: {{ $file }}-external-configmap
+              mountPath: /config/config.yml
+              readOnly: true
+              subPath: config.yml
+        volumes:
+        - name: {{ $file }}-external-configmap
+          configMap:
+            name: {{ $file }}-external-configmap
+            defaultMode: 0600
+        {{- end }}
+        {{- end }}
+        {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
